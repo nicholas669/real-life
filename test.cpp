@@ -558,25 +558,7 @@ void atm()
     }
   }
 }
-void fr()
-{
-  if (fridge.empty())
-  {
-    cout << "The fridge is empty" << endl;
-  }
-  else
-  {
-    for (int i = 0; i < fridge.size(); i++)
-    {
-      cout << "Fruit: " << get<0>(fridge[i]) << endl;
-      cout << "Amount: " << get<1>(fridge[i]) << endl;
-      cout << endl;
-    }
-  }
-  cout << "Press enter to continue" << endl;
-  cin.ignore();
-  cin.get();
-}
+
 
 void s()
 {
@@ -626,8 +608,11 @@ bool check(string a){
   return false;
 }
 
+
+vector<tuple<string, int>> cakess;
+vector<unique_ptr<Cake>> cakes;
 void bake(){
-  vector<unique_ptr<Cake>> cakes;
+  
     cout << "\033[2J\033[1;1H";
     cout << "Enter cake type" << endl;
     cout << "1. Chocolate Cake" << endl;
@@ -747,6 +732,27 @@ void bake(){
         cin.ignore();
         cin.get();
       cakes.push_back(make_unique<ChocolateCake>(shape, color, topping, choc_type));
+      cakess.push_back(make_tuple("Chocolate Cake",1));
+      
+      for (const auto &item : cakess)
+      {
+        bool found = false;
+        for (auto &fridgeItem : fridge)
+        {
+          if (get<0>(item) == get<0>(fridgeItem))
+          {
+            get<1>(fridgeItem) += get<1>(item);
+            found = true;
+            break;
+          }
+        }
+        if (!found)
+        {
+          fridge.push_back(make_tuple(get<0>(item), get<1>(item)));
+        }
+      }
+
+      
     }
 
     else if (cake_type == 2){
@@ -849,6 +855,25 @@ void bake(){
       cin.get();
 
       cakes.push_back(make_unique<StrawberryCake>(shape, color, topping, frosting, fruits));
+      cakess.push_back(make_tuple("Strawberry Cake",1));
+
+      for (const auto &item : cakess)
+      {
+        bool found = false;
+        for (auto &fridgeItem : fridge)
+        {
+          if (get<0>(item) == get<0>(fridgeItem))
+          {
+            get<1>(fridgeItem) += get<1>(item);
+            found = true;
+            break;
+          }
+        }
+        if (!found)
+        {
+          fridge.push_back(make_tuple(get<0>(item), get<1>(item)));
+        }
+      }
 
     }
 
@@ -926,6 +951,25 @@ void bake(){
       cin.ignore();
       cin.get();
       cakes.push_back(make_unique<VanillaCake>(shape, color, topping, nuts));
+      cakess.push_back(make_tuple("Strawberry Cake",1));
+
+      for (const auto &item : cakess)
+      {
+        bool found = false;
+        for (auto &fridgeItem : fridge)
+        {
+          if (get<0>(item) == get<0>(fridgeItem))
+          {
+            get<1>(fridgeItem) += get<1>(item);
+            found = true;
+            break;
+          }
+        }
+        if (!found)
+        {
+          fridge.push_back(make_tuple(get<0>(item), get<1>(item)));
+        }
+      }
 
     }
 
@@ -951,6 +995,26 @@ void bake(){
       return;
     }
 
+}
+
+void fr()
+{
+  if (fridge.empty())
+  {
+    cout << "The fridge is empty" << endl;
+  }
+  else
+  {
+    for (int i = 0; i < fridge.size(); i++)
+    {
+      cout << "Fruit: " << get<0>(fridge[i]) << endl;
+      cout << "Amount: " << get<1>(fridge[i]) << endl;
+      cout << endl;
+    }
+  }
+  cout << "Press enter to continue" << endl;
+  cin.ignore();
+  cin.get();
 }
 
 int main()
